@@ -27,5 +27,6 @@ frame = Image.fromarray(frame)
 #plt.axis('off')
 
 # Detect face
-face = mtcnn(frame)
-print(face.shape)
+#face = mtcnn(frame)
+save_path = os.path.join("/raid/home/automathon_2024/account10/", 'single_image.jpg')
+mtcnn(frame, save_path=save_path)

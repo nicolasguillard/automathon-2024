@@ -1,26 +1,59 @@
 import os
-from facenet_pytorch import MTCNN, InceptionResnetV1
-
-# If required, create a face detection pipeline using MTCNN:
-mtcnn = MTCNN(image_size=<image_size>, margin=<margin>)
-
-# Create an inception resnet (in eval mode):
-resnet = InceptionResnetV1(pretrained='vggface2').eval()
-
+from facenet_pytorch import MTCNN
+import cv2
+#import torchvision.io as io
 from PIL import Image
+import numpy as np
+from matplotlib import pyplot as plt
+from tqdm.notebook import tqdm
 
+# Create face detector
+mtcnn = MTCNN(select_largest=False, post_process=False, device='cuda')
+
+# Load a video
 dataset_dir = "/raid/datasets/hackathon2024"
 video_path = os.path.join(dataset_dir, "experimental_dataset", "rdftmwfljq.mp4")
-img = Image.open()
 
-# Get cropped and prewhitened image tensor
-save_path = "/raid/home/automathon_2024/account10/"
-img_cropped = mtcnn(img, save_path=os.path.join(save_path, "image_cropped"))
+v_cap = cv2.VideoCapture(video_path)
 
-# Calculate embedding (unsqueeze to add batch dimension)
-img_embedding = resnet(img_cropped.unsqueeze(0))
+# Loop through video
+batch_size = 32
+frames = []
+boxes = []
+landmarks = []
+view_frames = []
+view_boxes = []
+view_landmarks = []
+for _ in tqdm(range(v_len)):
+    
+    # Load frame
+    success, frame = v_cap.read()
+    if not success:
+        continue
+        
+    # Add to batch, resizing for speed
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    frame = Image.fromarray(frame)
+    frame = frame.resize([int(f * 0.25) for f in frame.size])
+    frames.append(frame)
+    
+    # When batch is full, detect faces and reset batch list
+    if len(frames) >= batch_size:
+        batch_boxes, _, batch_landmarks = mtcnn.detect(frames, landmarks=True)
+        boxes.extend(batch_boxes)
+        landmarks.extend(batch_landmarks)
+        
+        view_frames.append(frames[-1])
+        view_boxes.append(boxes[-1])
+        view_landmarks.append(landmarks[-1])
+        
+        frames = []
 
-# Or, if using for VGGFace2 classification
-resnet.classify = True
-img_probs = resnet(img_cropped.unsqueeze(0))
-print(img_probs)
+# Visualize
+fig, ax = plt.subplots(3, 3, figsize=(18, 12))
+for i in range(9):
+    ax[int(i / 3), i % 3].imshow(view_frames[i])
+    ax[int(i / 3), i % 3].axis('off')
+    for box, landmark in zip(view_boxes[i], view_landmarks[i]):
+        ax[int(i / 3), i % 3].scatter(*np.meshgrid(box[[0, 2]], box[[1, 3]]), s=8)
+        ax[int(i / 3), i % 3].scatter(landmark[:, 0], landmark[:, 1], s=6)
