@@ -19,6 +19,7 @@ video, audio, info = io.read_video(video_path, pts_unit='sec')
 print("video.size()", video.size())
 video = video.permute(0, 3, 1, 2)
 print("video.size()", video.size())
+video = video / 255
 
 #v_cap = cv2.VideoCapture('agqphdxmwt.mp4')
 #success, frame = v_cap.read()
