@@ -100,7 +100,7 @@ for dataset_choice in ["train", "test", "experimental"]:
                         box_square[1] += frame.shape[1] - box_square[3]
                     
                     face = frame[box_square[1]:box_square[3], box_square[0]:box_square[2], :]
-                    faces.append(torch.tensor(face).permute(2, 0, 1))
+                    faces.append(torch.tensor(face).permute(2, 0, 1).unsqueeze(dim=0))
                     min_l = min(l + 2 * margin, min_l)
 
                 # Rescaling each frame
@@ -110,7 +110,7 @@ for dataset_choice in ["train", "test", "experimental"]:
                     faces[i] = transform(face)
                     print(faces[i].size())
 
-                frames_face = torch.tensor(faces)
+                frames_face = torch.cat(faces)
                     
                 # Save files
                 saved_tensor_path = os.path.join(save_path, file.replace(".mp4", "_face.pt"))
