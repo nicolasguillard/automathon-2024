@@ -212,7 +212,6 @@ class VideoDataset(Dataset):
             return video, label, ID
 
 
-
 train_dataset = VideoDataset(dataset_dir, dataset_choice="train", nb_frames=nb_frames)
 test_dataset = VideoDataset(dataset_dir, dataset_choice="test", nb_frames=nb_frames)
 experimental_dataset = VideoDataset(dataset_dir, dataset_choice="experimental", nb_frames=nb_frames)
@@ -233,10 +232,8 @@ class DeepfakeDetector(nn.Module):
         y = self.sigmoid(y)
         return y
 
-# LOGGING
-
+# Wieghts & BiasLOGGING
 wandb.login(key="a446d513570a79c857317c3000584c5f6d6224f0")
-
 run = wandb.init(
     project="automathon"
 )
@@ -244,28 +241,52 @@ run = wandb.init(
 # ENTRAINEMENT
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+#  Hyperparameters
+SET = "EXP"
+
 batch_size = 32
+learning_rate = 1e-3 # 1e-4
+epochs = 5
+
+
 loss_fn = nn.MSELoss()
-model = DeepfakeDetector().to(device)
+
+model = DeepfakeDetector()
+model = model.to(device)
+
 print("Training model:")
 summary(model, input_size=(batch_size, 3, 10, 256, 256))
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-epochs = 5
-loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-#loader = DataLoader(experimental_dataset, batch_size=2, shuffle=True)
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+
+if SET == "EXP": # TRAIN / EXP
+    loader = DataLoader(experimental_dataset, batch_size=batch_size, shuffle=True)
+else:
+    loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 
 print("Training...")
+# Loop on epochs
 for epoch in range(epochs):
+    # Loop on the batch
     for sample in tqdm(loader):
+        # Init forward et backprop
         optimizer.zero_grad()
+
         X, label, ID = sample
+        # Sent to device
         X = X.to(device)
         label = label.to(device)
+        # Prediction
         label_pred = model(X)
-        label = torch.unsqueeze(label,dim=1)
+        # True value
+        label = torch.unsqueeze(label, dim=1)
+        # Loss
         loss = loss_fn(label, label_pred)
+        # Backpropagation
         loss.backward()
         optimizer.step()
+
         run.log({"loss": loss.item(), "epoch": epoch})
 
 ## TEST
