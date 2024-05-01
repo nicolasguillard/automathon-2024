@@ -110,7 +110,7 @@ for dataset_choice in ["train", "test", "experimental"]:
                     faces[i] = transform(face)
                     print(faces[i].size())
 
-                frames_face = torch.tenor(faces)
+                frames_face = torch.tensor(faces)
                     
                 # Save files
                 saved_tensor_path = os.path.join(save_path, file.replace(".mp4", "_face.pt"))
