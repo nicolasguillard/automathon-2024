@@ -10,6 +10,7 @@ from torch.utils.data import Dataset, DataLoader
 import torch
 import torchvision
 import torchvision.io as io
+import torchvision.transforms as transforms
 
 from facenet_pytorch import MTCNN
 
@@ -52,7 +53,8 @@ for dataset_choice in ["train", "test", "experimental"]:
                 frames = []
                 boxes = []
                 faces = []
-
+                min_l = 98765
+                
                 for _ in tqdm(range(v_len)):
                     # Load frame
                     success, frame = v_cap.read()
@@ -99,6 +101,12 @@ for dataset_choice in ["train", "test", "experimental"]:
                     
                     face = frame[box_square[1]:box_square[3], box_square[0]:box_square[2], :]
                     faces.append(torch.tensor(face))
+                    min_l = min(l, min_l)
+
+                # Rescaling each frame
+                transform = transforms.Resize(min_l)
+                for i, face in enumerate(faces):
+                    faces[i] = transform(face)
 
                 frames_face = torch.cat(faces)
                     
