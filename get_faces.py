@@ -104,7 +104,7 @@ for dataset_choice in ["train", "test", "experimental"]:
                     min_l = min(l, min_l)
 
                 # Rescaling each frame
-                transform = transforms.Resize(min_l)
+                transform = transforms.Resize(min_l.item())
                 for i, face in enumerate(faces):
                     faces[i] = transform(face)
 
