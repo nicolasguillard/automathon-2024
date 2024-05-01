@@ -100,14 +100,15 @@ for dataset_choice in ["train", "test", "experimental"]:
                         box_square[1] += frame.shape[1] - box_square[3]
                     
                     face = frame[box_square[1]:box_square[3], box_square[0]:box_square[2], :]
-                    faces.append(torch.tensor(face))
-                    min_l = min(l, min_l)
+                    faces.append(torch.tensor(face).permute(2, 0, 1))
+                    min_l = min(l + 2 * margin, min_l)
 
                 # Rescaling each frame
-                print(min_l, min_l.item())
+                print("Min", min_l, min_l.item())
                 transform = transforms.Resize(min_l.item())
                 for i, face in tqdm(enumerate(faces)):
                     faces[i] = transform(face)
+                    print(faces[i].size())
 
                 frames_face = torch.cat(faces)
                     
