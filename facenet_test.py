@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 from tqdm.notebook import tqdm
 
 # Create face detector
-mtcnn = MTCNN(select_largest=False, device='cuda')
+mtcnn = MTCNN(select_largest=False, post_process=False, device='cuda')
 
 # Load a single image and display
 dataset_dir = "/raid/datasets/hackathon2024"
