@@ -111,6 +111,7 @@ for dataset_choice in ["train", "test", "experimental"]:
                 frames_face = torch.cat(faces)
                     
                 # Save files
+                print("\tsaving...")
                 saved_tensor_path = os.path.join(save_path, file.replace(".mp4", "_face.pt"))
                 if save_tensor:
                     torch.save(frames_face, saved_tensor_path)
