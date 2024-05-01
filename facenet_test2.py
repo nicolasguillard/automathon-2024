@@ -5,7 +5,7 @@ import cv2
 from PIL import Image
 import numpy as np
 from matplotlib import pyplot as plt
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 import torch
 import torchvision
 
