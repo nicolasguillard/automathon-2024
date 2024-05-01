@@ -13,11 +13,12 @@ mtcnn = MTCNN(select_largest=False, device='cuda')
 # Load a single image and display
 dataset_dir = "/raid/datasets/hackathon2024"
 video_path = os.path.join(dataset_dir, "experimental_dataset", "rneucagbvg.mp4")
-print(video_path)
+print("video_path", video_path)
 
 video, audio, info = io.read_video(video_path, pts_unit='sec')
+print("video.size()", video.size())
+
 video = video.permute(0, 3, 1, 2)
-length = video.shape[0]
 
 #v_cap = cv2.VideoCapture('agqphdxmwt.mp4')
 #success, frame = v_cap.read()
