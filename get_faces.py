@@ -122,4 +122,5 @@ for dataset_choice in ["train", "test", "experimental"]:
                 saved_video_path = os.path.join(save_path, file.replace(".", "_face."))
                 print(f"\tsaving {saved_video_path}")
                 if save_video:
-                    torchvision.io.write_video(saved_video_path, torch.permute(frames_face, (0, 2, 3, 1)), fps=fps)
+                    for_video = torch.permute(frames_face, (0, 2, 3, 1))
+                    torchvision.io.write_video(saved_video_path, for_video, fps=fps)
