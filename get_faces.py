@@ -100,7 +100,7 @@ for dataset_choice in ["train", "test", "experimental"]:
                     face = frame[box_square[1]:box_square[3], box_square[0]:box_square[2], :]
                     faces.append(face)
 
-                frames_face = torch.cat(frames_face)
+                frames_face = torch.cat(faces)
                     
                 # Save files
                 saved_tensor_path = os.path.join(save_path, file.replace(".mp4", "_face.pt"))
