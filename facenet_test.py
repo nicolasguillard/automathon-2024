@@ -17,14 +17,13 @@ print("video_path", video_path)
 
 video, audio, info = io.read_video(video_path, pts_unit='sec')
 print("video.size()", video.size())
-
 video = video.permute(0, 3, 1, 2)
+print("video.size()", video.size())
 
 #v_cap = cv2.VideoCapture('agqphdxmwt.mp4')
 #success, frame = v_cap.read()
 #frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-img = video[0]
-frame = img.detach().numpy()
+frame = video[0]
 
 #plt.figure(figsize=(12, 8))
 #plt.imshow(frame)
