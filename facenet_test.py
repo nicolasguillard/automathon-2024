@@ -24,6 +24,7 @@ print("video.size()", video.size())
 #success, frame = v_cap.read()
 #frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 frame = video[0]
+print("frame.size()", frame.size())
 
 #plt.figure(figsize=(12, 8))
 #plt.imshow(frame)
