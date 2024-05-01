@@ -28,4 +28,4 @@ frame = Image.fromarray(frame)
 
 # Detect face
 face = mtcnn(frame)
-face.shape
+print(face.shape)
