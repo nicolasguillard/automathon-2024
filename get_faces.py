@@ -98,7 +98,7 @@ for dataset_choice in ["train", "test", "experimental"]:
                         box_square[1] += frame.shape[1] - box_square[3]
                     
                     face = frame[box_square[1]:box_square[3], box_square[0]:box_square[2], :]
-                    faces.append(face)
+                    faces.append(torch.tensor(face))
 
                 frames_face = torch.cat(faces)
                     
