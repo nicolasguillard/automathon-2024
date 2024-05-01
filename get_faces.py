@@ -24,7 +24,7 @@ root_dir = os.path.expanduser("~/automathon-2024")
 save_dir = "/raid/home/automathon_2024/account10/data"
 
 save_tensor = True
-save_video = True
+save_video = False
 margin = 25
 for dataset_choice in ["train", "test", "experimental"]:
         if  dataset_choice == "train":
@@ -53,7 +53,7 @@ for dataset_choice in ["train", "test", "experimental"]:
                 frames = []
                 boxes = []
                 faces = []
-                min_l = 98765
+                min_l = 0
                 
                 for _ in tqdm(range(v_len)):
                     # Load frame
