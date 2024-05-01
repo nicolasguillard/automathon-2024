@@ -53,7 +53,7 @@ for dataset_choice in ["train", "test", "experimental"]:
                 frames = []
                 boxes = []
                 faces = []
-                min_l = 0
+                min_l = 98765
                 
                 for _ in tqdm(range(v_len)):
                     # Load frame
