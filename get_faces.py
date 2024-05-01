@@ -104,17 +104,20 @@ for dataset_choice in ["train", "test", "experimental"]:
                     min_l = min(l, min_l)
 
                 # Rescaling each frame
+                print(min_l, min_l.item())
                 transform = transforms.Resize(min_l.item())
-                for i, face in enumerate(faces):
+                for i, face in tqdm(enumerate(faces)):
                     faces[i] = transform(face)
 
                 frames_face = torch.cat(faces)
                     
                 # Save files
-                print("\tsaving...")
                 saved_tensor_path = os.path.join(save_path, file.replace(".mp4", "_face.pt"))
+                print(f"\tsaving {saved_tensor_path}")
                 if save_tensor:
                     torch.save(frames_face, saved_tensor_path)
+
                 saved_video_path = os.path.join(save_path, file.replace(".", "_face."))
+                print(f"\tsaving {saved_video_path}")
                 if save_video:
                     torchvision.io.write_video(frames_face, saved_video_path, fps=fps)
