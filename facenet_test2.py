@@ -44,5 +44,5 @@ def capture_face(video_path, saved_tensor_path="", saved_video_path=""):
         torchvision.io.write_video(frames_face, saved_video_path)
 
 
-capture_face(video_path, saved_tensor_path=save_tensor_path, saved_video_path=save_video_path)
+capture_face(video_path, saved_tensor_path=save_tensor_path, saved_video_path="")
 
