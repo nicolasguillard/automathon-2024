@@ -105,7 +105,7 @@ for dataset_choice in ["train", "test", "experimental"]:
 
                 # Rescaling each frame
                 print("Min", min_l, min_l.item())
-                transform = transforms.Resize(min_l.item())
+                transform = transforms.Resize((min_l.item(), min_l.item()))
                 for i, face in tqdm(enumerate(faces)):
                     faces[i] = transform(face)
                     print(faces[i].size())
