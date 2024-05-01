@@ -17,7 +17,7 @@ print("video_path", video_path)
 
 video, audio, info = io.read_video(video_path, pts_unit='sec')
 print("video.size()", video.size())
-video = video.permute(0, 3, 1, 2)
+video = video.permute(0, 3, 2, 1)
 print("video.size()", video.size())
 video = video / 255
 
